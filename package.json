@@ -32,8 +32,11 @@
   "dependencies": {
     "codecov": "^3.1.0",
     "encoding": "^0.1.12",
+    "express": "^4.17.1",
     "gost89": "^0.1.11",
     "jksreader": "^1.0.0",
-    "jkurwa": "^1.2.0"
+    "jkurwa": "^1.2.0",
+    "koa": "^2.8.1",
+    "koa-router": "^7.4.0"
   }
 }
