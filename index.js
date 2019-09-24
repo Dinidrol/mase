@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require("express");
 const http = require('http');
 //Instanse
@@ -7,6 +8,7 @@ const coding_message = require('./lib/code_data');
 const app = express();
 
 let code_message;
+let response_data;
 
 require('./rand-shim.js');
 
@@ -20,19 +22,18 @@ function send_command_to_server(send_file, callback) {
             'Content-Length': text_buff.length
         },
         method: 'POST'
-    },(res) => {
-        //console.log(`Status Code: ${res}`);
+    },
+    (res) => {
+        var body = '';
         res.on('data', (data) => {
             if(res.statusCode == 200){
-                //console.log(JSON.parse(data));
-                callback(data);
+                body += data;
             }
-            //callback(JSON.parse(d));
-            //process.stdout.write(d);
         });
         res.on('end', e =>{
-            //process.stdout.write(e);
-            //console.log(`Status End: ${e}`);
+            response_data = JSON.parse(body);
+            callback(response_data);
+            fs.writeFileSync("response.txt", response_data);
         })
     });
     req.on('error', error =>{
@@ -46,16 +47,15 @@ async function main() {
     await coding_message.load_key('Key-6.dat:tect4', '123.cer');
     code_message = await coding_message.package_command('{"Command":"Objects"}');
     await send_command_to_server(code_message, (result) =>{
-        console.log(JSON.parse(result));
-        return result;
+        console.log(result);
+        console.log(typeof(result));
     });
-    //console.log(uuid());
 }
 
 app.get("/", function(request, response){
- main();
-    response.send("<h2>Привет Express!</h2>");
-    //response.send(data);
+   // main();
+    //response.send("<h2>Привет Express!</h2>");
+    response.send(response_data);
 });
 
 app.listen(3000);
