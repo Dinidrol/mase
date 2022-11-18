@@ -27,7 +27,7 @@
     "mocha": "^6.1.4",
     "nyc": "^14.1.0",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.2"
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "codecov": "^3.1.0",
